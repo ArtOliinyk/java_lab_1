@@ -7,6 +7,12 @@ public class Parser {
 
     private static final char DEFAULT_SEPARATOR = ',';
 
+    private static String filterString(String code) {
+        String partialFiltered = code.replaceAll("/\\*[^*/]*\\*/", "");
+        String fullFiltered = partialFiltered.replaceAll("//.*(?=\n)", "");
+        return fullFiltered;
+    }
+
     public static List<String> parseLine(String cvsLine) {
         return parseLine(cvsLine, DEFAULT_SEPARATOR);
     }
@@ -16,6 +22,7 @@ public class Parser {
         if (cvsLine == null || cvsLine.isEmpty()) {
             return result;
         }
+        cvsLine = filterString(cvsLine);
 
         StringBuffer curVal = new StringBuffer();
         boolean inQuotes = false;
